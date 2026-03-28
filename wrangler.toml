@@ -12,12 +12,11 @@ binding = "DB"
 database_name = "autoposter_db"
 database_id = "6b2bb1a2-0647-426f-9bbc-34843df8bb6a"
 
-[[r2_buckets]]
-binding = "BUCKET"
-bucket_name = "autoposter-images"
-
 [vars]
-# Add non-sensitive environment variables here
+CLOUDINARY_CLOUD_NAME = "dszaqv2fu"
+CLOUDINARY_API_KEY = "356328727165225"
+CLOUDINARY_API_SECRET = "Ye6b_IJoNrafW3ouTeHrJOk2s_Q"
+# Add other non-sensitive environment variables here
 POST_SCHEDULE_HOUR = "9"
 POST_SCHEDULE_MINUTE = "0"
 ENABLE_IMAGE_GENERATION = "true"

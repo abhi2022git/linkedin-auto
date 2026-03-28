@@ -39,11 +39,9 @@ async def cloudflare_middleware(request: Request, call_next):
     # Cloudflare Workers Python environment is passed in request.scope["env"]
     env = request.scope.get("env")
     if env:
-        from dashboard.database import set_d1_binding, set_r2_binding
+        from dashboard.database import set_d1_binding
         if hasattr(env, "DB"):
             set_d1_binding(env.DB)
-        if hasattr(env, "BUCKET"):
-            set_r2_binding(env.BUCKET)
     return await call_next(request)
 
 # Mount static directories (Conditional for Worker)

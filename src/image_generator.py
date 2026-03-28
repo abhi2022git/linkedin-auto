@@ -152,25 +152,54 @@ class ImageGenerator:
                 logger.warning(f"HF API Error ({response.status_code}): {response.text[:100]}... Using fallback.")
                 return self._generate_fallback(article, theme_name)
                 
-            # Success! Save the image
+            # Success! Now upload to Cloudinary
             image_bytes = response.content
             
             safe_title = "".join(c if c.isalnum() or c == " " else "" for c in article.title)[:40]
             safe_title = safe_title.strip().replace(" ", "_").lower()
-            filename = f"ai_post_{safe_title}_{random.randint(1000, 9999)}.png"
+            filename = f"ai_post_{safe_title}_{random.randint(1000, 9999)}"
             
-            # Cloudflare R2 Path
-            from dashboard.database import _r2_binding
-            if _r2_binding:
-                _r2_binding.put(filename, image_bytes)
-                logger.info(f"✅ AI Image saved to R2: {filename}")
-                return f"/images/{filename}" # Handled by asset gateway or custom route
+            # --- Cloudinary Upload ---
+            cloud_name = self.settings.get("cloudinary_cloud_name") or os.getenv("CLOUDINARY_CLOUD_NAME")
+            api_key = self.settings.get("cloudinary_api_key") or os.getenv("CLOUDINARY_API_KEY")
+            api_secret = self.settings.get("cloudinary_api_secret") or os.getenv("CLOUDINARY_API_SECRET")
             
-            image = Image.open(io.BytesIO(image_bytes))
-            filepath = os.path.join(self.output_dir, filename)
-            image.save(filepath, "PNG", quality=95)
-            logger.info(f"✅ AI Image saved: {filepath}")
-            return filepath
+            if cloud_name and api_key and api_secret:
+                import base64
+                upload_url = f"https://api.cloudinary.com/v1_1/{cloud_name}/image/upload"
+                
+                # We'll use a simple authenticated upload
+                timestamp = int(time.time())
+                # For manual uploads via requests, it's easier to use unsigned uploads or handle signatures
+                # Given we have the secret, Cloudinary's "Upload API" supports basic auth or signature
+                auth = (api_key, api_secret)
+                
+                logger.info(f"⬆️ Uploading to Cloudinary ({cloud_name})...")
+                files = {"file": (f"{filename}.png", image_bytes, "image/png")}
+                data = {
+                    "public_id": filename,
+                    "folder": "linkedin_autoposter",
+                    "timestamp": timestamp
+                }
+                
+                cloudinary_res = requests.post(upload_url, auth=auth, files=files, data=data, timeout=30)
+                
+                if cloudinary_res.status_code in (200, 201):
+                    result_data = cloudinary_res.json()
+                    logger.info(f"✅ AI Image saved to Cloudinary: {result_data['secure_url']}")
+                    return result_data["secure_url"]
+                else:
+                    logger.warning(f"Cloudinary Error ({cloudinary_res.status_code}): {cloudinary_res.text[:100]}... Using local/fallback.")
+            
+            # If Cloudinary fails or is not configured, we might still be running locally
+            if not os.getenv("CLOUDFLARE_WORKER") and hasattr(self, "output_dir"):
+                image = Image.open(io.BytesIO(image_bytes))
+                filepath = os.path.join(self.output_dir, f"{filename}.png")
+                image.save(filepath, "PNG", quality=95)
+                logger.info(f"✅ AI Image saved locally: {filepath}")
+                return filepath
+            
+            return self._generate_fallback(article, theme_name)
             
         except Exception as e:
             logger.error(f"⚠️ AI Image Generation failed: {e}. Falling back to gradient generator.")
