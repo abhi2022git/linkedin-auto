@@ -1,0 +1,23 @@
+name = "linkedin-auto-poster"
+main = "dashboard/main.py"
+compatibility_date = "2024-03-28"
+
+[assets]
+directory = "./dashboard/static"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "autoposter_db"
+database_id = "6b2bb1a2-0647-426f-9bbc-34843df8bb6a"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "autoposter_images"
+
+[vars]
+# Add non-sensitive environment variables here
+POST_SCHEDULE_HOUR = "9"
+POST_SCHEDULE_MINUTE = "0"
+ENABLE_IMAGE_GENERATION = "true"
+PREFERRED_MODEL = "auto"

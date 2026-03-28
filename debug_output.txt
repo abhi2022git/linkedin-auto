@@ -1,0 +1,6 @@
+USERINFO status=200
+USERINFO body={"name":"Tanishq Soni","sub":"vdi7il4rg9","locale":{"country":"US","language":"en"},"given_name":"Tanishq","family_name":"Soni","picture":"https://media.licdn.com/dms/image/v2/D5603AQEHHSYXs3nXyg/profile-displayphoto-scale_400_400/B56ZkGnHHfIAAg-/0/1756752544159?e=1776297600&v=beta&t=X1CqZjo-BFWRKKyeMmr1Y60zWGtsiKnJSzoUjVyhePo"}
+AUTHOR=urn:li:person:vdi7il4rg9
+REST_POSTS status=426
+REST_POSTS body={"status":426,"code":"NONEXISTENT_VERSION","message":"Requested version 20240101 is not active"}
+REST_POSTS headers={'Content-Type': 'application/json', 'X-Restli-Gateway-Error': 'true', 'Date': 'Wed, 25 Mar 2026 21:37:52 GMT', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'X-Li-Fabric': 'prod-lor1', 'X-Li-Pop': 'prod-lor1-x', 'X-LI-Proto': 'http/1.1', 'X-LI-UUID': 'AAZN4BR/iatLB46lN3snmw==', 'Set-Cookie': 'bcookie="v=2&f4e46be4-d526-45ca-8b53-e72b471baa87"; domain=.linkedin.com; Path=/; Secure; Expires=Thu, 25-Mar-2027 21:37:52 GMT; SameSite=None, lidc="b=OB79:s=O:r=O:a=O:p=O:g=3388:u=180:x=1:i=1774474672:t=1774515526:v=2:sig=AQEfiS0uYOR1u-1P-j5Dm3bodzA2eqDr"', 'X-LI-Route-Key': '"b=OB79:s=O:r=O:a=O:p=O:g=3388:u=180:x=1:i=1774474672:t=1774515526:v=2:sig=AQEfiS0uYOR1u-1P-j5Dm3bodzA2eqDr"'}

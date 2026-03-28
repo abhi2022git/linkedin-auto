@@ -1,0 +1,201 @@
+{
+    "sources": [
+        {
+            "name": "Hacker News - Best",
+            "url": "https://hnrss.org/best",
+            "type": "rss",
+            "category": "tech",
+            "enabled": false
+        },
+        {
+            "name": "TechCrunch",
+            "url": "https://techcrunch.com/feed/",
+            "type": "rss",
+            "category": "tech",
+            "enabled": false
+        },
+        {
+            "name": "The Verge",
+            "url": "https://www.theverge.com/rss/index.xml",
+            "type": "rss",
+            "category": "tech",
+            "enabled": false
+        },
+        {
+            "name": "MIT Technology Review",
+            "url": "https://www.technologyreview.com/feed/",
+            "type": "rss",
+            "category": "tech",
+            "enabled": false
+        },
+        {
+            "name": "Towards Data Science (Medium)",
+            "url": "https://towardsdatascience.com/feed",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "ArXiv - Machine Learning",
+            "url": "https://rss.arxiv.org/rss/cs.LG",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "ArXiv - Artificial Intelligence",
+            "url": "https://rss.arxiv.org/rss/cs.AI",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "Dev.to - AI/ML",
+            "url": "https://dev.to/feed/tag/machinelearning",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "Dev.to - Python",
+            "url": "https://dev.to/feed/tag/python",
+            "type": "rss",
+            "category": "programming",
+            "enabled": false
+        },
+        {
+            "name": "Google AI Blog",
+            "url": "https://blog.google/technology/ai/rss/",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "OpenAI Blog",
+            "url": "https://openai.com/blog/rss.xml",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "VentureBeat - AI",
+            "url": "https://venturebeat.com/category/ai/feed/",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "Analytics Vidhya",
+            "url": "https://www.analyticsvidhya.com/feed/",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "KDnuggets",
+            "url": "https://www.kdnuggets.com/feed",
+            "type": "rss",
+            "category": "ai_ml",
+            "enabled": false
+        },
+        {
+            "name": "AWS Machine Learning Blog",
+            "url": "https://aws.amazon.com/blogs/machine-learning/feed/",
+            "type": "rss",
+            "category": "cloud_ai",
+            "enabled": false
+        },
+        {
+            "name": "SQL Skills",
+            "url": "https://www.sqlskills.com/blogs/paul/feed/",
+            "type": "rss",
+            "category": "tech",
+            "enabled": true
+        },
+        {
+            "name": "Stack Exchange",
+            "url": "https://dba.stackexchange.com/feeds",
+            "type": "rss",
+            "category": "tech",
+            "enabled": true
+        },
+        {
+            "name": "Dev Blogs SQL",
+            "url": "https://devblogs.microsoft.com/azure-sql/feed/",
+            "type": "rss",
+            "category": "tech",
+            "enabled": true
+        },
+        {
+            "name": "Tech Community",
+            "url": "https://techcommunity.microsoft.com/t5/azure/ct-p/Azure/rss",
+            "type": "rss",
+            "category": "tech",
+            "enabled": false
+        },
+        {
+            "name": "Fabric",
+            "url": "https://blog.fabric.microsoft.com/en-us/blog/feed/",
+            "type": "rss",
+            "category": "tech",
+            "enabled": true
+        },
+        {
+            "name": "Bi",
+            "url": "https://data-mozart.com/feed/",
+            "type": "rss",
+            "category": "tech",
+            "enabled": true
+        },
+        {
+            "name": "databricks",
+            "url": "https://www.databricks.com/feed",
+            "type": "rss",
+            "category": "tech",
+            "enabled": true
+        },
+        {
+            "name": "towardsdatascience",
+            "url": "https://towardsdatascience.com/feed",
+            "type": "rss",
+            "category": "tech",
+            "enabled": false
+        }
+    ],
+    "keywords": {
+        "high_priority": [
+            "artificial intelligence",
+            "machine learning",
+            "deep learning",
+            "LLM",
+            "large language model",
+            "GPT",
+            "transformer",
+            "neural network",
+            "computer vision",
+            "NLP",
+            "generative AI",
+            "AI agents",
+            "RAG",
+            "reinforcement learning",
+            "diffusion model"
+        ],
+        "medium_priority": [
+            "data science",
+            "MLOps",
+            "cloud computing",
+            "Python",
+            "TensorFlow",
+            "PyTorch",
+            "Kubernetes",
+            "Docker",
+            "microservices",
+            "DevOps",
+            "API",
+            "automation",
+            "blockchain",
+            "cybersecurity",
+            "edge computing"
+        ]
+    }
+}
