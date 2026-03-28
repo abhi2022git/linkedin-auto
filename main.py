@@ -8,16 +8,16 @@ import os
 import sys
 
 # Add project root to path so we can import src.*
-PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, PROJECT_ROOT)
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from database import init_db, set_d1_binding
-from routers import auth, posts, settings, sources, overview, pipeline, logs, auth_user
+from routers import auth, posts, settings, sources, overview, pipeline, logs, auth_user, analytics
 from routers.auth_user import get_current_user
 from fastapi import Depends
 

@@ -12,7 +12,7 @@ from typing import Optional, List, Dict, Any
 from contextlib import contextmanager
 
 # Add project root to path
-PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, PROJECT_ROOT)
 
 # --- Database Configuration ---

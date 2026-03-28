@@ -110,14 +110,14 @@
             "url": "https://www.sqlskills.com/blogs/paul/feed/",
             "type": "rss",
             "category": "tech",
-            "enabled": true
+            "enabled": false
         },
         {
             "name": "Stack Exchange",
             "url": "https://dba.stackexchange.com/feeds",
             "type": "rss",
             "category": "tech",
-            "enabled": true
+            "enabled": false
         },
         {
             "name": "Dev Blogs SQL",
