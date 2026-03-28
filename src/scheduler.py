@@ -18,7 +18,7 @@ logger = setup_logging()
 def _try_log_run_start():
     """Safely start a pipeline run record."""
     try:
-        from dashboard.database import log_pipeline_run_start
+        from database import log_pipeline_run_start
         return log_pipeline_run_start(platform='linkedin')
     except Exception:
         return None
@@ -29,7 +29,7 @@ def _try_log_run_complete(run_id, **kwargs):
     if run_id is None:
         return
     try:
-        from dashboard.database import log_pipeline_run_complete
+        from database import log_pipeline_run_complete
         log_pipeline_run_complete(run_id, **kwargs)
     except Exception:
         pass
@@ -42,7 +42,7 @@ def run_pipeline(override_model: str = None, user_id: int = 1):
     from .image_generator import ImageGenerator
     from .linkedin_poster import LinkedInPoster
     from .utils import DatabaseManager
-    from dashboard.database import get_db
+    from database import get_db
 
     # Fetch user settings
     with get_db() as conn:
@@ -125,7 +125,7 @@ def run_dry(verbose: bool = True, override_model: str = None, user_id: int = 1):
     from .scraper import ContentScraper
     from .content_generator import ContentGenerator
     from .image_generator import ImageGenerator
-    from dashboard.database import get_db
+    from database import get_db
 
     with get_db() as conn:
         row = conn.execute("SELECT enable_image_generation FROM user_settings WHERE user_id = ?", (user_id,)).fetchone()
@@ -156,7 +156,7 @@ def run_dry(verbose: bool = True, override_model: str = None, user_id: int = 1):
 
 def start_scheduler():
     """Start the APScheduler for automated posting across all users."""
-    from dashboard.database import get_db
+    from database import get_db
     scheduler = BlockingScheduler()
 
     with get_db() as conn:

@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, Query
 from typing import Optional
-from dashboard.database import get_analytics_summary
+from database import get_analytics_summary
 
 router = APIRouter(prefix="/api", tags=["analytics"])
 

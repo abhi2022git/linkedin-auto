@@ -80,7 +80,7 @@ class _SQLiteLogHandler(logging.Handler):
 
     def emit(self, record):
         try:
-            from dashboard.database import write_system_log
+            from database import write_system_log
             write_system_log(
                 level=record.levelname,
                 module=record.name,
@@ -107,7 +107,7 @@ class DatabaseManager:
     
     def _init_db(self):
         """Create tables if they don't exist."""
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             conn.execute("""
                 CREATE TABLE IF NOT EXISTS posted_topics (
@@ -135,7 +135,7 @@ class DatabaseManager:
     
     def is_already_posted(self, url: str = None, title: str = None) -> bool:
         """Check if a topic has already been posted."""
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             if url:
                 row = conn.execute(
@@ -155,7 +155,7 @@ class DatabaseManager:
     def record_post(self, article: Article, post_content: str, model_used: str,
                     linkedin_post_id: str = None, image_path: str = None):
         """Record a successful post."""
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             conn.execute(
                 """INSERT INTO posted_topics 
@@ -169,7 +169,7 @@ class DatabaseManager:
     
     def log_scrape(self, source_count: int, article_count: int, selected_title: str = None):
         """Log a scrape run."""
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             conn.execute(
                 """INSERT INTO scrape_log (scraped_at, source_count, article_count, selected_title)
@@ -180,14 +180,14 @@ class DatabaseManager:
     
     def get_post_count(self) -> int:
         """Get total number of posts made."""
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             row = conn.execute("SELECT COUNT(*) FROM posted_topics").fetchone()
             return row[0] if row else 0
     
     def get_last_model_used(self) -> Optional[str]:
         """Get the model used in the last post (for rotation)."""
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             row = conn.execute(
                 "SELECT model_used FROM posted_topics ORDER BY id DESC LIMIT 1"

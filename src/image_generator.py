@@ -67,7 +67,7 @@ class ImageGenerator:
             self.output_dir = os.path.join(get_project_root(), "data", "images")
             os.makedirs(self.output_dir, exist_ok=True)
         
-        from dashboard.database import get_db
+        from database import get_db
         with get_db() as conn:
             row = conn.execute("SELECT * FROM user_settings WHERE user_id = ?", (self.user_id,)).fetchone()
             self.settings = dict(row) if row else {}

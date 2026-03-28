@@ -2,7 +2,7 @@
 
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from dashboard.database import get_posts, get_post_by_id, retry_post
+from database import get_posts, get_post_by_id, retry_post
 
 router = APIRouter(prefix="/api", tags=["posts"])
 

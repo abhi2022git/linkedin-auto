@@ -11,7 +11,7 @@ from pydantic import BaseModel
 import jwt
 import bcrypt
 
-from dashboard.database import get_db
+from database import get_db
 
 # Security config
 SECRET_KEY = os.getenv("JWT_SECRET_KEY", "super-secret-default-key-change-in-prod")

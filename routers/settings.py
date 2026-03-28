@@ -3,8 +3,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from typing import Dict
 
-from dashboard.database import get_db, get_settings
-from dashboard.routers.auth_user import get_current_user
+from database import get_db, get_settings
+from routers.auth_user import get_current_user
 from src.utils import get_project_root
 
 router = APIRouter(prefix="/api", tags=["settings"])

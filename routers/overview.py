@@ -1,7 +1,7 @@
 """Router: Overview — Dashboard home cards."""
 
 from fastapi import APIRouter
-from dashboard.database import get_overview, get_settings
+from database import get_overview, get_settings
 
 router = APIRouter(prefix="/api", tags=["overview"])
 

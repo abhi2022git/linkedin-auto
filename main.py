@@ -18,7 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database import init_db, set_d1_binding
 from routers import auth, posts, settings, sources, overview, pipeline, logs, auth_user
-from dashboard.routers.auth_user import get_current_user
+from routers.auth_user import get_current_user
 from fastapi import Depends
 
 app = FastAPI(title="AutoPoster Admin", version="1.0.0")
@@ -39,7 +39,7 @@ async def cloudflare_middleware(request: Request, call_next):
     # Cloudflare Workers Python environment is passed in request.scope["env"]
     env = request.scope.get("env")
     if env:
-        from dashboard.database import set_d1_binding
+        from database import set_d1_binding
         if hasattr(env, "DB"):
             set_d1_binding(env.DB)
     return await call_next(request)

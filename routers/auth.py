@@ -1,7 +1,7 @@
 import os
 from fastapi import APIRouter, Depends, Request
 from fastapi.responses import RedirectResponse
-from dashboard.routers.auth_user import get_current_user
+from routers.auth_user import get_current_user
 from src.linkedin_poster import LinkedInPoster
 
 router = APIRouter(prefix="/api/auth", tags=["linkedin_auth"])

@@ -2,8 +2,8 @@
 
 from fastapi import APIRouter, HTTPException, Query
 from typing import Optional
-from dashboard.models import SourceToggle, SourceCreate
-from dashboard.database import get_sources, toggle_source, add_source
+from models import SourceToggle, SourceCreate
+from database import get_sources, toggle_source, add_source
 
 router = APIRouter(prefix="/api", tags=["sources"])
 

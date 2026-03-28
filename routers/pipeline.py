@@ -4,9 +4,9 @@ import threading
 import time
 from fastapi import APIRouter, Query
 from typing import Optional
-from dashboard.models import PipelineRunRequest
-from dashboard.database import get_pipeline_runs, get_pipeline_run_by_id, log_pipeline_run_start, log_pipeline_run_complete
-from dashboard.routers.auth_user import get_current_user
+from models import PipelineRunRequest
+from database import get_pipeline_runs, get_pipeline_run_by_id, log_pipeline_run_start, log_pipeline_run_complete
+from routers.auth_user import get_current_user
 from fastapi import APIRouter, Query, Depends
 
 router = APIRouter(prefix="/api", tags=["pipeline"])

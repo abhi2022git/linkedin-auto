@@ -1,10 +1,10 @@
 name = "linkedin-auto-poster"
-main = "dashboard/main.py"
+main = "app.py"
 compatibility_date = "2024-10-01"
 compatibility_flags = ["python_workers"]
 
 [assets]
-directory = "./dashboard/static"
+directory = "./static"
 binding = "ASSETS"
 
 [[d1_databases]]
