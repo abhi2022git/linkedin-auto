@@ -1,6 +1,7 @@
 name = "linkedin-auto-poster"
 main = "dashboard/main.py"
-compatibility_date = "2024-03-28"
+compatibility_date = "2024-10-01"
+compatibility_flags = ["python_workers"]
 
 [assets]
 directory = "./dashboard/static"
