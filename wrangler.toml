@@ -14,7 +14,7 @@ database_id = "6b2bb1a2-0647-426f-9bbc-34843df8bb6a"
 
 [[r2_buckets]]
 binding = "BUCKET"
-bucket_name = "autoposter_images"
+bucket_name = "autoposter-images"
 
 [vars]
 # Add non-sensitive environment variables here
