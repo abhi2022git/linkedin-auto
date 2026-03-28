@@ -1,111 +1,87 @@
 """
-LinkedIn Auto-Poster — Main Entry Point
+AutoPoster Admin Dashboard — FastAPI Application
 
-Usage:
-    python main.py              Start the scheduler (posts daily)
-    python main.py --once       Run one posting cycle
-    python main.py --dry-run    Generate content without posting
-    python main.py --auth       Set up LinkedIn OAuth credentials
-    python main.py --status     Show posting stats
+Run: uvicorn dashboard.main:app --host 0.0.0.0 --port 8000 --reload
 """
 
-import sys
 import os
-import argparse
+import sys
 
-# Ensure project root is in path
-sys.path.insert(0, os.path.dirname(__file__))
+# Add project root to path so we can import src.*
+PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+sys.path.insert(0, PROJECT_ROOT)
 
-from dotenv import load_dotenv
-load_dotenv(os.path.join(os.path.dirname(__file__), "config", ".env"))
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+
+from database import init_db, set_d1_binding
+from routers import auth, posts, settings, sources, overview, pipeline, logs, auth_user
+from dashboard.routers.auth_user import get_current_user
+from fastapi import Depends
+
+app = FastAPI(title="AutoPoster Admin", version="1.0.0")
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Cloudflare Worker Middleware (optional but useful for D1)
+@app.middleware("http")
+async def cloudflare_middleware(request: Request, call_next):
+    """Capture Cloudflare environment on each request."""
+    # Cloudflare Workers Python environment is passed in request.scope["env"]
+    env = request.scope.get("env")
+    if env:
+        from dashboard.database import set_d1_binding
+        if hasattr(env, "DB"):
+            set_d1_binding(env.DB)
+    return await call_next(request)
+
+# Mount static directories (Conditional for Worker)
+images_dir = os.path.join(PROJECT_ROOT, "data", "images")
+if not os.getenv("CLOUDFLARE_WORKER"):
+    os.makedirs(images_dir, exist_ok=True)
+    app.mount("/images", StaticFiles(directory=images_dir), name="images")
+
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if not os.getenv("CLOUDFLARE_WORKER"):
+    os.makedirs(static_dir, exist_ok=True)
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+
+# Include public routers
+# ... (rest of routers remains)
+app.include_router(auth_user.router)
+app.include_router(auth.router)
+
+# Include protected routers
+auth_deps = [Depends(get_current_user)]
+app.include_router(overview.router, dependencies=auth_deps)
+app.include_router(posts.router, dependencies=auth_deps)
+app.include_router(pipeline.router, dependencies=auth_deps)
+app.include_router(sources.router, dependencies=auth_deps)
+app.include_router(analytics.router, dependencies=auth_deps)
+app.include_router(logs.router, dependencies=auth_deps)
+app.include_router(settings.router, dependencies=auth_deps)
+
+@app.on_event("startup")
+def startup():
+    """Run DB migrations on startup. Safety check for Worker."""
+    if not os.getenv("CLOUDFLARE_WORKER"):
+        init_db()
 
 
-def show_banner():
-    """Display the application banner."""
-    banner = """
-    ╔══════════════════════════════════════════════════════╗
-    ║                                                      ║
-    ║   🤖 LinkedIn Auto-Poster                            ║
-    ║   ─────────────────────────                          ║
-    ║   Scrape → Generate → Post — Fully Automated        ║
-    ║                                                      ║
-    ║   Powered by Groq (Llama 3, Mixtral, Gemma)         ║
-    ║                                                      ║
-    ╚══════════════════════════════════════════════════════╝
-    """
-    print(banner)
-
-
-def show_status():
-    """Show posting statistics."""
-    from src.utils import DatabaseManager
-    db = DatabaseManager()
-
-    count = db.get_post_count()
-    last_model = db.get_last_model_used()
-
-    print(f"\n📊 Posting Statistics")
-    print(f"   Total posts: {count}")
-    print(f"   Last model used: {last_model or 'N/A'}")
-
-    # Check token status
-    from src.linkedin_poster import TokenManager
-    tm = TokenManager(user_id=1)
-    if tm.has_tokens():
-        print(f"   LinkedIn auth: ✅ Configured")
-    else:
-        print(f"   LinkedIn auth: ❌ Not configured (run --auth)")
-
-    # Check Groq key
-    if os.getenv("GROQ_API_KEY"):
-        print(f"   Groq API key: ✅ Set")
-    else:
-        print(f"   Groq API key: ❌ Not set")
-
-    print()
-
-
-def main():
-    parser = argparse.ArgumentParser(
-        description="LinkedIn Auto-Poster — Automated tech content posting",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  python main.py --auth       Set up LinkedIn OAuth (do this first!)
-  python main.py --dry-run    Test the pipeline without posting
-  python main.py --once       Post once and exit
-  python main.py              Start the daily scheduler
-        """,
-    )
-    parser.add_argument("--auth", action="store_true", help="Run LinkedIn OAuth setup")
-    parser.add_argument("--once", action="store_true", help="Run one posting cycle and exit")
-    parser.add_argument("--dry-run", action="store_true", help="Generate content without posting")
-    parser.add_argument("--status", action="store_true", help="Show posting statistics")
-
-    args = parser.parse_args()
-    show_banner()
-
-    if args.auth:
-        from auth_setup import run_auth_setup
-        run_auth_setup()
-
-    elif args.dry_run:
-        from src.scheduler import run_dry
-        run_dry()
-
-    elif args.once:
-        from src.scheduler import run_pipeline
-        run_pipeline()
-
-    elif args.status:
-        show_status()
-
-    else:
-        # Start scheduler
-        from src.scheduler import start_scheduler
-        show_status()
-        start_scheduler()
-
+@app.get("/")
+def serve_dashboard():
+    """Serve the dashboard SPA."""
+    return FileResponse(os.path.join(os.path.dirname(__file__), "static", "index.html"))
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
